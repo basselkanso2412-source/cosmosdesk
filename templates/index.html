@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CosmosDesk — Science, Reason & the Universe</title>
+  <meta name="description" content="Live science news, deep dives into quantum physics, cosmology, astrophysics, and evolutionary biology. Evidence-based. No myths." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════════════════════
+     LANDING PAGE
+═══════════════════════════════════════════════════════════════════════════════ -->
+<div id="landing-page">
+  <canvas id="landing-stars"></canvas>
+
+  <!-- Nebula glow blobs -->
+  <div class="nebula nebula-1"></div>
+  <div class="nebula nebula-2"></div>
+  <div class="nebula nebula-3"></div>
+
+  <!-- Scientist portrait ghosts (CSS animated) -->
+  <div class="sp-portraits" aria-hidden="true">
+    <div class="sp sp-1">
+      <img class="sp-img" src="https://en.wikipedia.org/wiki/Special:FilePath/Albert_Einstein_Head.jpg" alt="Einstein">
+      <span class="sp-name">Einstein</span>
+    </div>
+    <div class="sp sp-2">
+      <img class="sp-img" src="https://en.wikipedia.org/wiki/Special:FilePath/Stephen_Hawking.StarChild.jpg" alt="Hawking">
+      <span class="sp-name">Hawking</span>
+    </div>
+    <div class="sp sp-3">
+      <img class="sp-img" src="https://en.wikipedia.org/wiki/Special:FilePath/Charles_Darwin_seated_crop.jpg" alt="Darwin">
+      <span class="sp-name">Darwin</span>
+    </div>
+    <div class="sp sp-4">
+      <img class="sp-img" src="https://en.wikipedia.org/wiki/Special:FilePath/Paul_Dirac.jpg" alt="Dirac">
+      <span class="sp-name">Dirac</span>
+    </div>
+    <div class="sp sp-5">
+      <img class="sp-img" src="https://en.wikipedia.org/wiki/Special:FilePath/Carl_Sagan_Planetary_Society.JPG" alt="Sagan">
+      <span class="sp-name">Sagan</span>
+    </div>
+    <div class="sp sp-6">
+      <img class="sp-img" src="https://en.wikipedia.org/wiki/Special:FilePath/Richard_Feynman_at_Los_Alamos.jpg" alt="Feynman">
+      <span class="sp-name">Feynman</span>
+    </div>
+  </div>
+
+  <div class="landing-content">
+
+    <!-- Logo -->
+    <div class="landing-logo-wrap">
+      <span class="landing-logo-icon">🔭</span>
+      <span class="landing-logo-text">CosmosDesk</span>
+    </div>
+
+    <!-- Tagline -->
+    <div class="landing-tagline">Where Science Meets the Universe</div>
+
+    <!-- Rotating phrases -->
+    <div class="landing-phrases-wrap">
+      <div class="landing-phrase active">"Reality needs no mythology"</div>
+      <div class="landing-phrase">"We are the universe, understanding itself"</div>
+      <div class="landing-phrase">"Evidence is the only scripture"</div>
+      <div class="landing-phrase">"Forged in starlight. Guided by reason."</div>
+    </div>
+    <div class="landing-dots">
+      <span class="landing-dot active"></span>
+      <span class="landing-dot"></span>
+      <span class="landing-dot"></span>
+      <span class="landing-dot"></span>
+    </div>
+
+    <!-- Topic pills -->
+    <div class="landing-pills">
+      <span class="lpill lpill-quantum">⚛️ Quantum Physics</span>
+      <span class="lpill lpill-cosmology">💥 Big Bang</span>
+      <span class="lpill lpill-astrophysics">⚫ Black Holes</span>
+      <span class="lpill lpill-evolution">🧬 Evolution</span>
+      <span class="lpill lpill-astronomy">🌌 Cosmology</span>
+      <span class="lpill lpill-reason">⚖️ Science vs Myth</span>
+    </div>
+
+    <!-- Atheist / Freethinker cards -->
+    <div class="lp-cards">
+      <div class="lp-card lp-card-atheist">
+        <div class="lp-card-icon">🔥</div>
+        <div class="lp-card-label">For the Atheist</div>
+        <div class="lp-card-phrase">"The cosmos needs no creator. Neither does your wonder."</div>
+        <div class="lp-card-sub">You chose reason. You chose evidence. You chose freedom.</div>
+      </div>
+      <div class="lp-card lp-card-question">
+        <div class="lp-card-icon">🧭</div>
+        <div class="lp-card-label">Still Questioning?</div>
+        <div class="lp-card-phrase">"Every great mind began by doubting what they were told."</div>
+        <div class="lp-card-sub">Doubt is the beginning of wisdom. Science rewards curiosity.</div>
+      </div>
+    </div>
+
+    <!-- CTA + credit row -->
+    <div class="landing-bottom">
+      <button class="landing-cta" onclick="enterApp()">
+        <span>Explore the Universe</span>
+        <span class="landing-cta-arrow">→</span>
+      </button>
+      <div class="landing-credit">
+        <span class="landing-credit-phrase">"Reality needs no mythology"</span>
+        <span class="landing-credit-sep">·</span>
+        Built by <span class="landing-bk">BK357</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════════════════════════════
+     MAIN APP
+═══════════════════════════════════════════════════════════════════════════════ -->
+<div id="app">
+
+  <!-- ── Header ─────────────────────────────────────────────────────────── -->
+  <header>
+    <a class="logo" href="#" onclick="switchTab('home'); return false;">
+      <span class="logo-icon">🔭</span>
+      <span class="logo-text">CosmosDesk</span>
+    </a>
+    <nav>
+      <button id="nav-home"     class="nav-btn" data-tab="home">Home</button>
+      <button id="nav-news"     class="nav-btn" data-tab="news">Live News</button>
+      <button id="nav-topics"   class="nav-btn" data-tab="topics">Topics</button>
+      <button id="nav-timeline" class="nav-btn" data-tab="timeline">Timeline</button>
+      <button id="nav-freethinkers" class="nav-btn" data-tab="freethinkers">Minds Without Gods</button>
+      <button id="nav-glossary" class="nav-btn" data-tab="glossary">Glossary</button>
+      <button id="nav-library"  class="nav-btn" data-tab="library">Library</button>
+      <button id="nav-chat"     class="nav-btn" data-tab="chat">AI Chat</button>
+      <button id="nav-events"    class="nav-btn" data-tab="events">Sky Events</button>
+      <button id="nav-debunked"  class="nav-btn" data-tab="debunked">Debunked</button>
+      <button id="nav-scale"     class="nav-btn" data-tab="scale">Universe Scale</button>
+      <button id="nav-media"     class="nav-btn" data-tab="media">Media</button>
+      <button id="nav-articles"  class="nav-btn" data-tab="articles">Articles</button>
+      <button id="nav-fallacies" class="nav-btn" data-tab="fallacies">Fallacy Spotter</button>
+      <button id="nav-vsscript"  class="nav-btn" data-tab="vsscript">vs Scripture</button>
+      <button id="nav-args"      class="nav-btn" data-tab="args">Philosophy Tree</button>
+      <button id="nav-debate"    class="nav-btn" data-tab="debate">Debate Mode</button>
+    </nav>
+  </header>
+
+  <!-- ── Main ───────────────────────────────────────────────────────────── -->
+  <main>
+
+    <!-- ── HOME ──────────────────────────────────────────────────────────── -->
+    <div id="home-panel" class="tab-panel">
+      <canvas id="starfield"></canvas>
+      <div class="home-content">
+
+        <!-- ── New Hero ─────────────────────────────────────────────────── -->
+        <div class="home-hero">
+          <div class="home-hero-left">
+            <div class="home-hero-eyebrow">
+              <span class="eyebrow-dot"></span>
+              13.8 Billion Years of Reality — No Creator Required
+            </div>
+            <h1 class="home-hero-title">
+              Reality,<br>
+              <span class="home-hero-gradient">Undiluted.</span>
+            </h1>
+            <p class="home-hero-desc">
+              The universe has been running its own show since the Big Bang —
+              through quantum fluctuations, exploding stars, 3.8 billion years
+              of evolution, and finally, a primate curious enough to figure it all out.
+              <strong>No myths. No gods. Just the staggering truth.</strong>
+            </p>
+            <div class="home-hero-cta">
+              <button class="btn btn-primary" onclick="switchTab('topics')">Explore Topics</button>
+              <button class="btn btn-outline" onclick="switchTab('timeline')">Universe Timeline</button>
+            </div>
+            <div class="hero-search-wrap">
+              <input id="hero-search" class="hero-search" type="text" placeholder="Search topics, scientists, concepts…" autocomplete="off">
+              <span class="hero-search-icon">🔍</span>
+              <div id="hero-search-results" class="hero-search-results"></div>
+            </div>
+          </div>
+          <div class="home-hero-right">
+            <div class="home-hero-stats">
+              <div class="hstat">
+                <div class="hstat-num">13.8<span>B</span></div>
+                <div class="hstat-label">Years since our Big Bang — but eternal inflation suggests ours may be one of infinite universes</div>
+              </div>
+              <div class="hstat">
+                <div class="hstat-num">2T</div>
+                <div class="hstat-label">Galaxies in the observable universe alone</div>
+              </div>
+              <div class="hstat">
+                <div class="hstat-num">3.8<span>B</span></div>
+                <div class="hstat-label">Years life has existed on Earth</div>
+              </div>
+              <div class="hstat hstat-zero">
+                <div class="hstat-num hstat-zero-num">0</div>
+                <div class="hstat-label">Verified evidence for a creator — ever</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Universe Composition Bars ────────────────────────────────── -->
+        <div id="composition-section" class="composition-section"></div>
+
+        <!-- ── Rotating phrase strip ─────────────────────────────────────── -->
+        <div class="phrase-strip">
+          <div class="phrase-strip-inner">
+            <div class="strip-phrase active">"Reality needs no mythology"</div>
+            <div class="strip-phrase">"We are the universe, understanding itself"</div>
+            <div class="strip-phrase">"Evidence is the only scripture"</div>
+            <div class="strip-phrase">"Forged in starlight. Guided by reason."</div>
+          </div>
+          <div class="strip-dots">
+            <span class="strip-dot active"></span>
+            <span class="strip-dot"></span>
+            <span class="strip-dot"></span>
+            <span class="strip-dot"></span>
+          </div>
+        </div>
+
+        <!-- ── Editorial quotes ──────────────────────────────────────────── -->
+        <div class="section">
+          <div class="eq-grid">
+
+            <div class="eq-card eq-atheist">
+              <div class="eq-top">
+                <span class="eq-tag eq-tag-atheist">🔥 For the Atheist</span>
+              </div>
+              <div class="eq-mark">"</div>
+              <blockquote class="eq-quote">
+                The cosmos is all that is, or ever was, or ever will be.
+              </blockquote>
+              <div class="eq-author">
+                <span class="eq-author-name">Carl Sagan</span>
+                <span class="eq-author-role">Astronomer · Cosmos, 1980</span>
+              </div>
+              <div class="eq-divider"></div>
+              <p class="eq-body">
+                You don't need a god to feel awe. You need only to look up.
+                The universe is incomprehensibly vast, ancient, and indifferent —
+                and that makes your brief, conscious existence inside it <em>extraordinary</em>.
+                Atheism is not emptiness. It is the fullest possible embrace of reality.
+              </p>
+            </div>
+
+            <div class="eq-card eq-question">
+              <div class="eq-top">
+                <span class="eq-tag eq-tag-question">🧭 Still Questioning?</span>
+              </div>
+              <div class="eq-mark">"</div>
+              <blockquote class="eq-quote">
+                That which can be asserted without evidence can be dismissed without evidence.
+              </blockquote>
+              <div class="eq-author">
+                <span class="eq-author-name">Christopher Hitchens</span>
+                <span class="eq-author-role">Author · God Is Not Great, 2007</span>
+              </div>
+              <div class="eq-divider"></div>
+              <p class="eq-body">
+                Doubt is not weakness — it is the beginning of wisdom.
+                Every religion in history has demanded you stop asking.
+                Science demands the opposite. If you're questioning what
+                you were told, you are already thinking more clearly than most.
+                <em>Keep going.</em>
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ── Second quote row ──────────────────────────────────────────── -->
+        <div class="section">
+          <div class="eq-wide">
+            <div class="eq-wide-mark">"</div>
+            <div class="eq-wide-inner">
+              <blockquote class="eq-wide-quote">
+                We are a way for the cosmos to know itself.
+              </blockquote>
+              <div class="eq-wide-author">
+                <span class="eq-author-name">Carl Sagan</span>
+                <span class="eq-author-role">The atoms of our bodies were forged in dying stars.
+                Our curiosity is the universe becoming aware of itself.
+                There is no creation myth that comes close to this truth.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Scientist mini-quotes ────────────────────────────────────── -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">Voices of Reason</div>
+            <button class="section-link" onclick="switchTab('freethinkers')">Minds Without Gods →</button>
+          </div>
+          <div class="mini-quotes-grid">
+            <div class="mq-card" style="--mq-color:#00d4ff">
+              <div class="mq-emoji">🌌</div>
+              <blockquote class="mq-quote">"I regard the brain as a computer which will stop working when its components fail. There is no heaven or afterlife for broken-down computers."</blockquote>
+              <div class="mq-author">Stephen Hawking</div>
+              <div class="mq-field">Theoretical Physics</div>
+              <button class="mq-share" onclick="copyQuote(this)">⧉ Copy</button>
+            </div>
+            <div class="mq-card" style="--mq-color:#a855f7">
+              <div class="mq-emoji">⚛️</div>
+              <blockquote class="mq-quote">"Forget Jesus. The stars died so that you could be here today."</blockquote>
+              <div class="mq-author">Lawrence Krauss</div>
+              <div class="mq-field">Theoretical Physics</div>
+              <button class="mq-share" onclick="copyQuote(this)">⧉ Copy</button>
+            </div>
+            <div class="mq-card" style="--mq-color:#f97316">
+              <div class="mq-emoji">⚡</div>
+              <blockquote class="mq-quote">"If we are honest — and scientists have to be — we must admit that religion is a jumble of false assertions, with no basis in reality."</blockquote>
+              <div class="mq-author">Paul Dirac</div>
+              <div class="mq-field">Quantum Mechanics · Nobel 1933</div>
+              <button class="mq-share" onclick="copyQuote(this)">⧉ Copy</button>
+            </div>
+            <div class="mq-card" style="--mq-color:#fbbf24">
+              <div class="mq-emoji">🎯</div>
+              <blockquote class="mq-quote">"I would rather have questions that can't be answered than answers that can't be questioned."</blockquote>
+              <div class="mq-author">Richard Feynman</div>
+              <div class="mq-field">Quantum Physics · Nobel 1965</div>
+              <button class="mq-share" onclick="copyQuote(this)">⧉ Copy</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Daily fact ────────────────────────────────────────────────── -->
+        <div class="section">
+          <div class="fact-banner">
+            <div class="fact-icon">💡</div>
+            <div>
+              <div class="fact-label">Science Fact of the Day</div>
+              <div id="fact-text" class="fact-text">Loading…</div>
+            </div>
+          </div>
+          <div class="fact-banner" style="margin-top:12px">
+            <div class="fact-icon">📅</div>
+            <div>
+              <div class="fact-label">On This Day in Science</div>
+              <div id="otd-text" class="fact-text">Loading…</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Featured topics ───────────────────────────────────────────── -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">Featured Topics</div>
+            <button class="section-link" onclick="switchTab('topics')">View all →</button>
+          </div>
+          <div id="featured-topics" class="topics-grid"></div>
+        </div>
+
+        <!-- ── Einstein spotlight ───────────────────────────────────────── -->
+        <div class="section">
+          <div class="einstein-spotlight">
+            <div class="es-left">
+              <img class="es-photo" src="https://en.wikipedia.org/wiki/Special:FilePath/Albert_Einstein_Head.jpg" alt="Albert Einstein">
+              <div class="es-badge">Nobel Prize 1921 · Agnostic</div>
+              <div class="es-name">Albert Einstein</div>
+              <div class="es-field">Special & General Relativity · E=mc²</div>
+            </div>
+            <div class="es-right">
+              <div class="es-qmark">"</div>
+              <blockquote class="es-quote">The word God is for me nothing more than the expression and product of human weaknesses, and the Bible a collection of honourable but still primitive legends.</blockquote>
+              <div class="es-source">— Private letter to Eric Gutkind, January 3, 1954. Sold at auction for $2.9 million.</div>
+              <div class="es-note">
+                ⚠️ <strong>Note:</strong> The viral quote <em>"The more I study science, the more I believe in God"</em> was <strong>never said by Einstein</strong>. It is a fabrication. His real views — in his own handwriting — are above.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Latest news ───────────────────────────────────────────────── -->
+        <div class="section">
+          <div class="section-header">
+            <div class="section-title">Latest Science News</div>
+            <button class="section-link" onclick="switchTab('news')">All news →</button>
+          </div>
+          <div id="mini-news" class="news-mini-list"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── NEWS ───────────────────────────────────────────────────────────── -->
+    <div id="news-panel" class="tab-panel">
+      <div class="news-tab">
+        <div style="margin-bottom:20px">
+          <h2 style="font-size:22px; font-weight:800; margin-bottom:6px">Live Science News</h2>
+          <p style="font-size:14px; color:var(--tx2)">Aggregated in real-time from NASA, arXiv, ScienceDaily, Phys.org, Quanta Magazine, Space.com, EarthSky, and New Scientist.</p>
+        </div>
+        <div id="news-filter-bar" class="filter-bar"></div>
+        <div id="news-sources" class="news-sources-grid"></div>
+      </div>
+    </div>
+
+    <!-- ── TOPICS ─────────────────────────────────────────────────────────── -->
+    <div id="topics-panel" class="tab-panel">
+      <div class="topics-tab">
+        <div style="margin-bottom:20px">
+          <h2 style="font-size:22px; font-weight:800; margin-bottom:6px">Science Topics</h2>
+          <p style="font-size:14px; color:var(--tx2)">Deep dives into the fields of science that reshape our understanding of reality — and directly confront religious mythology.</p>
+        </div>
+        <input id="topics-search" class="search-input" type="text" placeholder="Search topics…">
+        <div id="topics-filter-bar" class="filter-bar"></div>
+        <button class="btn btn-outline" style="margin-bottom:18px" onclick="openQuiz()">🎯 Play Myth vs Fact Quiz</button>
+        <div id="topics-grid-main" class="topics-grid"></div>
+      </div>
+    </div>
+
+    <!-- ── TIMELINE ───────────────────────────────────────────────────────── -->
+    <div id="timeline-panel" class="tab-panel">
+      <div class="timeline-tab">
+        <div class="timeline-header">
+          <h2 class="timeline-title">The History of Everything</h2>
+          <p class="timeline-sub">
+            From the Big Bang 13.8 billion years ago to the present — every major event in the history of the universe, the solar system, and life on Earth.
+            <strong style="color:var(--evolution)"> No creation myths. Just what actually happened.</strong>
+          </p>
+        </div>
+        <div class="timeline-container">
+          <div class="timeline-line"></div>
+          <div id="timeline-events" class="timeline-events"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FREETHINKERS ──────────────────────────────────────────────────── -->
+    <div id="freethinkers-panel" class="tab-panel">
+      <div class="freethinkers-tab">
+        <div class="ft-header">
+          <h2 class="ft-title">Minds Without Gods</h2>
+          <p class="ft-sub">The greatest intellects in human history who looked at the universe through the lens of reason — and found no evidence of a creator. Atheists, agnostics, and rationalists who shaped everything we know.</p>
+        </div>
+        <input id="ft-search" class="search-input" type="text" placeholder="Search scientists…">
+        <div id="ft-filter-bar" class="filter-bar"></div>
+        <div id="ft-grid" class="ft-grid"></div>
+      </div>
+    </div>
+
+    <!-- ── GLOSSARY ───────────────────────────────────────────────────────── -->
+    <div id="glossary-panel" class="tab-panel">
+      <div class="glossary-tab">
+        <div style="margin-bottom:20px">
+          <h2 style="font-size:22px; font-weight:800; margin-bottom:6px">Glossary</h2>
+          <p style="font-size:14px; color:var(--tx2)">Plain-language definitions of the scientific terms used across CosmosDesk.</p>
+        </div>
+        <input id="glossary-search" class="search-input" type="text" placeholder="Search terms…">
+        <div id="glossary-list" class="glossary-list"></div>
+      </div>
+    </div>
+
+    <!-- ── LIBRARY ────────────────────────────────────────────────────────── -->
+    <div id="library-panel" class="tab-panel">
+      <div class="library-tab">
+        <div style="margin-bottom:20px">
+          <h2 style="font-size:22px; font-weight:800; margin-bottom:6px">Library</h2>
+          <p style="font-size:14px; color:var(--tx2)">Books that go deeper than any single topic page — recommended reading for the scientifically curious.</p>
+        </div>
+        <div id="library-list" class="library-list"></div>
+      </div>
+    </div>
+
+    <!-- ── CHAT ───────────────────────────────────────────────────────────── -->
+    <div id="chat-panel" class="tab-panel">
+      <div class="chat-tab">
+        <div class="chat-header">
+          <h2 class="chat-title">Ask a Science Question</h2>
+          <p class="chat-sub">AI-powered science communicator. Ask about quantum physics, the Big Bang, evolution, consciousness, the age of the universe — anything.</p>
+        </div>
+        <div id="chat-suggestions" class="chat-suggestions"></div>
+        <div id="chat-messages" class="chat-messages">
+          <div class="msg assistant">
+            <div class="msg-label">CosmosDesk</div>
+            <div class="msg-bubble">
+              👋 Ask me anything about science. I can explain quantum mechanics, why evolution is true,
+              how we know the universe is 13.8 billion years old, what dark matter is, why religious
+              claims about creation don't hold up to scrutiny — or anything else you're curious about.
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <textarea id="chat-input" class="chat-input" placeholder="Ask about the Big Bang, evolution, quantum physics…" rows="1"></textarea>
+          <button id="chat-send" class="chat-send" title="Send">➤</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SKY EVENTS ──────────────────────────────────────────────────── -->
+    <div id="events-panel" class="tab-panel">
+      <div class="events-tab">
+        <div class="events-header">
+          <h2>Upcoming Sky Events</h2>
+          <p>Real astronomical events — meteor showers, eclipses, planetary oppositions, and more. Reality offers its own spectacular show, no mythology required.</p>
+        </div>
+        <div id="events-grid" class="events-grid"></div>
+      </div>
+    </div>
+
+    <!-- ── DEBUNKED ─────────────────────────────────────────────────────── -->
+    <div id="debunked-panel" class="tab-panel">
+      <div class="debunked-tab">
+        <div class="debunked-header">
+          <h2>Claims vs. Science</h2>
+          <p>Common myths, religious claims, and scientific misrepresentations — each systematically examined against the evidence. Click any card to expand the full rebuttal.</p>
+        </div>
+        <div id="debunked-filter-bar" class="filter-bar"></div>
+        <div id="debunked-list" class="debunked-list"></div>
+      </div>
+    </div>
+
+    <!-- ── UNIVERSE SCALE ────────────────────────────────────────────────── -->
+    <div id="scale-panel" class="tab-panel">
+      <div class="scale-tab">
+        <div class="scale-header">
+          <h2>The Scale of Everything</h2>
+          <p>From the Planck length to the observable universe — 62 orders of magnitude of reality. Use the arrows or slider to zoom through scales.</p>
+        </div>
+        <div class="scale-display">
+          <div class="scale-nav">
+            <button id="scale-prev" class="scale-nav-btn">←</button>
+            <div class="scale-info">
+              <div class="scale-obj-icon" id="scale-icon">🔭</div>
+              <div class="scale-obj-name" id="scale-name">Loading…</div>
+              <div class="scale-obj-size" id="scale-size"></div>
+              <div class="scale-obj-desc" id="scale-desc"></div>
+              <div class="scale-obj-context" id="scale-context"></div>
+            </div>
+            <button id="scale-next" class="scale-nav-btn">→</button>
+          </div>
+          <div class="scale-bar-wrap">
+            <div class="scale-bar-label-left">← Planck Length</div>
+            <div class="scale-bar"><div id="scale-progress" class="scale-bar-fill"></div></div>
+            <div class="scale-bar-label-right">Observable Universe →</div>
+          </div>
+          <input type="range" id="scale-slider" class="scale-slider" min="0" max="23" step="1" value="12">
+          <div class="scale-counter">Level <span id="scale-step">13</span> of 24 — <span id="scale-exp"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── MEDIA ─────────────────────────────────────────────────────────── -->
+    <div id="media-panel" class="tab-panel">
+      <div class="media-tab">
+        <div class="media-header">
+          <h2>Science Media Picks</h2>
+          <p>The best podcasts, YouTube channels, and documentaries for the scientifically curious. Evidence-based, skeptic-friendly, no mythology.</p>
+        </div>
+        <div class="media-type-tabs">
+          <button class="media-type-btn active" data-type="podcasts">🎙️ Podcasts</button>
+          <button class="media-type-btn" data-type="youtube">▶️ YouTube</button>
+          <button class="media-type-btn" data-type="documentaries">🎬 Documentaries</button>
+        </div>
+        <div id="media-grid" class="media-grid"></div>
+      </div>
+    </div>
+
+    <!-- ── Articles Panel ────────────────────────────────────────────────── -->
+    <div id="articles-panel" class="tab-panel">
+      <div class="articles-tab">
+        <div class="articles-header">
+          <h2>Deep-Dive Articles</h2>
+          <p>Long-form analysis of the key arguments in science, atheism, and philosophy — written to arm you for every debate.</p>
+        </div>
+        <div id="articles-grid" class="articles-grid"></div>
+      </div>
+    </div>
+
+    <!-- ── Fallacy Spotter Panel ─────────────────────────────────────────── -->
+    <div id="fallacies-panel" class="tab-panel">
+      <div class="fallacies-tab">
+        <div class="panel-header">
+          <h2>Fallacy Spotter</h2>
+          <p>The 8 logical fallacies most commonly used in religious arguments — learn to spot them and shut them down instantly.</p>
+        </div>
+        <div id="fallacies-grid" class="fallacies-grid"></div>
+      </div>
+    </div>
+
+    <!-- ── vs Scripture Panel ─────────────────────────────────────────────── -->
+    <div id="vsscript-panel" class="tab-panel">
+      <div class="vsscript-tab">
+        <div class="panel-header">
+          <h2>Scripture vs Science</h2>
+          <p>Specific claims made in religious texts — and what the evidence actually shows. Every row is a direct, testable contradiction.</p>
+        </div>
+        <div class="vsscript-sub-tabs">
+          <button class="vsscript-sub-btn active" data-vstype="scripture">📖 vs Scripture</button>
+          <button class="vsscript-sub-btn" data-vstype="design">🔭 Designed vs Actual Universe</button>
+        </div>
+        <div id="vsscript-filter-bar" class="vsscript-filter-bar" style="display:none">
+          <button class="vsscript-filter-btn active" data-vsfilter="all">All</button>
+          <button class="vsscript-filter-btn" data-vsfilter="Quran">☪️ Quran Only</button>
+          <button class="vsscript-filter-btn" data-vsfilter="Bible">✝️ Bible Only</button>
+        </div>
+        <div id="vsscript-content"></div>
+      </div>
+    </div>
+
+    <!-- ── Philosophy Tree Panel ──────────────────────────────────────────── -->
+    <div id="args-panel" class="tab-panel">
+      <div class="args-tab">
+        <div class="panel-header">
+          <h2>Philosophy Tree</h2>
+          <p>Every major argument for God's existence — its strongest version, then its complete scientific and philosophical refutation.</p>
+        </div>
+        <div id="args-list" class="args-list"></div>
+      </div>
+    </div>
+
+    <!-- ── Debate Mode Panel ──────────────────────────────────────────────── -->
+    <div id="debate-panel" class="tab-panel">
+      <div class="debate-tab">
+        <div class="panel-header">
+          <h2>Debate Mode</h2>
+          <p>Practice dismantling religious arguments. Choose a mode: <strong>Atheist</strong> (AI plays the theist — you respond), or <strong>Theist</strong> (AI plays the atheist and demolishes every argument you make). Both modes use the strongest versions of each position.</p>
+        </div>
+        <div class="debate-mode-btns">
+          <button class="debate-mode-btn active" data-dmode="atheist" onclick="setDebateMode('atheist')">
+            <div class="debate-mode-icon">⚔️</div>
+            <div class="debate-mode-label">Practice Atheist</div>
+            <div class="debate-mode-desc">AI plays a theist making strong arguments. You respond and dismantle them.</div>
+          </button>
+          <button class="debate-mode-btn" data-dmode="theist" onclick="setDebateMode('theist')">
+            <div class="debate-mode-icon">🛡️</div>
+            <div class="debate-mode-label">Stress-Test Beliefs</div>
+            <div class="debate-mode-desc">You make the religious argument. AI takes apart every claim with evidence.</div>
+          </button>
+        </div>
+        <div id="debate-starter-btns" class="debate-starter-btns">
+          <div class="debate-starter-label">Start with a classic argument:</div>
+          <button class="debate-starter" onclick="startDebate('cosmological')">Cosmological Argument</button>
+          <button class="debate-starter" onclick="startDebate('fine-tuning')">Fine-Tuning</button>
+          <button class="debate-starter" onclick="startDebate('morality')">Morality Requires God</button>
+          <button class="debate-starter" onclick="startDebate('consciousness')">Consciousness Gap</button>
+          <button class="debate-starter" onclick="startDebate('evil')">Problem of Evil (reversed)</button>
+          <button class="debate-starter" onclick="startDebate('experience')">Religious Experience</button>
+        </div>
+        <div id="debate-messages" class="debate-messages"></div>
+        <div class="debate-input-row">
+          <textarea id="debate-input" class="debate-input" placeholder="Type your response…" rows="3"></textarea>
+          <button class="debate-send-btn" onclick="sendDebateMessage()">Send ↵</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────────────────────────── -->
+  <footer id="site-footer">
+    <div class="footer-phrases">
+      <div class="footer-phrase active">"Reality needs no mythology"</div>
+      <div class="footer-phrase">"We are the universe, understanding itself"</div>
+      <div class="footer-phrase">"Evidence is the only scripture"</div>
+      <div class="footer-phrase">"Forged in starlight. Guided by reason."</div>
+    </div>
+    <div class="footer-dots">
+      <span class="footer-dot active"></span>
+      <span class="footer-dot"></span>
+      <span class="footer-dot"></span>
+      <span class="footer-dot"></span>
+    </div>
+    <div class="footer-by">Built by <span class="footer-name">BK357</span></div>
+  </footer>
+</div>
+
+<!-- ── Random Quote Floating Button ─────────────────────────────────────── -->
+<button id="random-quote-btn" class="random-quote-btn" onclick="showRandomQuote()" title="Random science quote">💬</button>
+<div id="quote-toast" class="quote-toast">
+  <div class="qt-quote" id="qt-quote-text"></div>
+  <div class="qt-author" id="qt-author-text"></div>
+  <div class="qt-footer">
+    <button class="qt-share" onclick="shareCurrentQuote()">⧉ Copy quote</button>
+    <button class="qt-close" onclick="closeQuoteToast()">✕ Close</button>
+  </div>
+</div>
+
+<!-- ── Modal Reading Progress Bar ────────────────────────────────────────── -->
+<div id="modal-progress-bar" class="modal-progress-bar"></div>
+
+<!-- ── Topic Detail Modal ─────────────────────────────────────────────────── -->
+<div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div class="modal-scroll-progress" id="modal-scroll-progress"></div>
+    <button id="modal-close" class="modal-close" aria-label="Close">✕</button>
+    <div id="modal-inner"></div>
+  </div>
+</div>
+
+<!-- ── Quiz Modal ─────────────────────────────────────────────────────────── -->
+<div id="quiz-overlay" class="modal-overlay" role="dialog" aria-modal="true">
+  <div class="modal quiz-modal">
+    <button id="quiz-close" class="modal-close" aria-label="Close">✕</button>
+    <div id="quiz-inner"></div>
+  </div>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
