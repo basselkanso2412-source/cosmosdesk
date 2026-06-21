@@ -239,6 +239,11 @@ const CAT_LABELS = {
 // ── Tab Navigation ─────────────────────────────────────────────────────────
 function switchTab(tab) {
   state.tab = tab;
+  // Close the mobile nav menu on selection
+  const headerEl = document.querySelector('header');
+  if (headerEl) headerEl.classList.remove('nav-open');
+  document.getElementById('nav-toggle')?.setAttribute('aria-expanded', 'false');
+  window.scrollTo(0, 0);
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   const panel = document.getElementById(tab + '-panel');
@@ -2017,6 +2022,23 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.nav-btn[data-tab]').forEach(btn => {
     btn.addEventListener('click', () => switchTab(btn.dataset.tab));
   });
+
+  // Mobile hamburger menu
+  const navToggle = document.getElementById('nav-toggle');
+  const headerEl = document.querySelector('header');
+  if (navToggle && headerEl) {
+    navToggle.addEventListener('click', () => {
+      const open = headerEl.classList.toggle('nav-open');
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    // Close the menu when tapping outside it
+    document.addEventListener('click', e => {
+      if (headerEl.classList.contains('nav-open') && !headerEl.contains(e.target)) {
+        headerEl.classList.remove('nav-open');
+        navToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
 
   // Modal close
   document.getElementById('modal-overlay')?.addEventListener('click', e => {

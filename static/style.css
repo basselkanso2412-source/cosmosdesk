@@ -381,6 +381,24 @@ nav::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
 
 .header-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
 
+/* Hamburger toggle (mobile only) */
+.nav-toggle {
+  display: none;
+  flex-direction: column; justify-content: center; gap: 5px;
+  margin-left: auto; flex-shrink: 0;
+  width: 42px; height: 42px; padding: 0 9px;
+  background: var(--s2); border: 1px solid var(--b1); border-radius: 8px;
+  cursor: pointer;
+}
+.nav-toggle span {
+  display: block; width: 100%; height: 2px; border-radius: 2px;
+  background: var(--tx);
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+header.nav-open .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+header.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+header.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
 /* ── Main ─────────────────────────────────────────────────────────────────── */
 main { flex: 1; }
 
@@ -1317,11 +1335,30 @@ blockquote.es-quote {
 .quiz-result-score { font-size: 48px; font-weight: 800; color: var(--quantum); margin-bottom: 8px; }
 .quiz-result-label { font-size: 14px; color: var(--tx2); margin-bottom: 24px; }
 
+/* ── Mobile nav: hamburger dropdown ───────────────────────────────────────── */
+@media (max-width: 860px) {
+  .nav-toggle { display: flex; }
+  nav {
+    position: absolute; top: 100%; left: 0; right: 0;
+    flex-direction: column; gap: 2px; flex: none;
+    background: rgba(3, 7, 18, 0.98);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--b1);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+    padding: 8px 12px 14px;
+    max-height: calc(100dvh - 58px); overflow-y: auto;
+    display: none;
+  }
+  header.nav-open nav { display: flex; }
+  .nav-btn {
+    width: 100%; text-align: left;
+    padding: 12px 14px; font-size: 15px; border-radius: 8px;
+  }
+}
+
 /* ── Responsive ───────────────────────────────────────────────────────────── */
 @media (max-width: 640px) {
   header { padding: 0 16px; }
-  nav { gap: 2px; overflow-x: auto; }
-  .nav-btn { padding: 6px 10px; font-size: 12px; }
   .hero { padding: 50px 16px 40px; }
   .hero h1 { font-size: 32px; }
   .section, .news-tab, .topics-tab, .timeline-tab, .chat-tab, .glossary-tab, .library-tab { padding: 16px; }
@@ -1348,6 +1385,32 @@ blockquote.es-quote {
   .einstein-spotlight { grid-template-columns: 1fr; padding: 24px 20px; }
   .es-left { flex-direction: row; text-align: left; padding: 16px; }
   .sp-1, .sp-2, .sp-3, .sp-4, .sp-5, .sp-6 { display: none; }
+
+  /* Landing page: allow scrolling so nothing is clipped on short screens */
+  #landing-page {
+    align-items: flex-start;
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+    height: 100vh; height: 100dvh;
+  }
+  .landing-content { margin: auto; padding: 32px 20px; gap: 0; }
+  .landing-logo-icon { font-size: 40px; }
+  .landing-cta { padding: 14px 32px; font-size: 16px; }
+
+  /* Prevent iOS auto-zoom on focus (inputs must be >= 16px) */
+  .search-input, .hero-search, .chat-input, .debate-input,
+  #topics-search, #glossary-search, #ft-search, #hero-search {
+    font-size: 16px;
+  }
+
+  /* Use dynamic viewport height for the chat panel */
+  .chat-tab { height: calc(100dvh - 90px); }
+
+  /* Full-bleed modals on phones */
+  .modal-overlay { padding: 0; }
+  .modal { border-radius: 0; min-height: 100dvh; }
+
+  .home-hero-title { letter-spacing: -1px; }
+  .home-hero-cta .btn { flex: 1; }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
