@@ -594,6 +594,7 @@ blockquote.eq-wide-quote {
   color: var(--cosmology); text-transform: uppercase; margin-bottom: 6px;
 }
 .fact-text { font-size: 15px; color: var(--tx); line-height: 1.6; }
+.qod-author { font-size: 12px; color: var(--tx3); font-weight: 600; margin-top: 8px; }
 
 /* Section headers */
 .section {

@@ -275,6 +275,7 @@ async function initHome() {
   initStarfield();
   loadDailyFact();
   loadOnThisDay();
+  loadQuoteOfDay();
   loadFeaturedTopics();
   loadMiniNews();
   initHeroSearch();
@@ -289,6 +290,20 @@ async function loadOnThisDay() {
     const d = await r.json();
     el.textContent = d.event;
   } catch (_) {}
+}
+
+// Atheist Quote of the Day — rotates daily from STATIC_QUOTES (client-side)
+function loadQuoteOfDay() {
+  const el = document.getElementById('qod-text');
+  if (!el) return;
+  const pool = STATIC_QUOTES.filter(q => q.author !== 'Fact-check note');
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 0);
+  const dayOfYear = Math.floor((now - start) / 86400000);
+  const q = pool[dayOfYear % pool.length];
+  el.textContent = '“' + q.text + '”';
+  const authEl = document.getElementById('qod-author');
+  if (authEl) authEl.textContent = '— ' + q.author;
 }
 
 async function loadDailyFact() {
