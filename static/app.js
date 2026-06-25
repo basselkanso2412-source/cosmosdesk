@@ -295,7 +295,8 @@ async function loadDailyFact() {
   const el = document.getElementById('fact-text');
   if (!el) return;
   try {
-    const r = await fetch('/api/daily_fact');
+    const today = new Date().toISOString().slice(0, 10);
+    const r = await fetch('/api/daily_fact?d=' + today, { cache: 'no-store' });
     const d = await r.json();
     el.textContent = d.fact;
     const cat = d.category;

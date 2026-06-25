@@ -62,7 +62,10 @@ def scientists():
 @app.route('/api/daily_fact')
 def daily_fact():
     idx = date.today().timetuple().tm_yday % len(DAILY_FACTS)
-    return jsonify(DAILY_FACTS[idx])
+    resp = jsonify(DAILY_FACTS[idx])
+    # Never cache — guarantees a fresh fact each calendar day
+    resp.headers['Cache-Control'] = 'no-store, max-age=0, must-revalidate'
+    return resp
 
 
 @app.route('/api/glossary')
