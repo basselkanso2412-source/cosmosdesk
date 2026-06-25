@@ -339,8 +339,8 @@ header {
   background: rgba(3, 7, 18, 0.92);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--b1);
-  padding: 0 24px;
-  height: 58px;
+  padding: 8px 24px;
+  min-height: 58px;
   display: flex; align-items: center; gap: 24px;
 }
 
@@ -358,12 +358,7 @@ header {
 }
 
 nav {
-  display: flex; gap: 4px; flex: 1;
-  overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #334155 transparent;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 2px;
+  display: flex; flex-wrap: wrap; gap: 4px; flex: 1;
 }
 nav::-webkit-scrollbar { height: 3px; }
 nav::-webkit-scrollbar-track { background: transparent; }
