@@ -178,50 +178,59 @@ def ask():
     gemini_key    = os.getenv('GEMINI_API_KEY', '')
 
     def stream_anthropic():
-        import anthropic
-        client = anthropic.Anthropic(api_key=anthropic_key)
-        with client.messages.stream(
-            model='claude-opus-4-8',
-            max_tokens=1024,
-            system=system_prompt,
-            messages=messages,
-        ) as stream:
-            for text in stream.text_stream:
-                yield f'data: {json.dumps({"delta": text})}\n\n'
+        try:
+            import anthropic
+            client = anthropic.Anthropic(api_key=anthropic_key)
+            with client.messages.stream(
+                model='claude-opus-4-8',
+                max_tokens=1024,
+                system=system_prompt,
+                messages=messages,
+            ) as stream:
+                for text in stream.text_stream:
+                    yield f'data: {json.dumps({"delta": text})}\n\n'
+        except Exception as e:
+            yield f'data: {json.dumps({"delta": "[anthropic error] " + type(e).__name__ + ": " + str(e)[:400]})}\n\n'
         yield 'data: [DONE]\n\n'
 
     def stream_openai():
-        from openai import OpenAI
-        client = OpenAI(api_key=openai_key)
-        resp = client.chat.completions.create(
-            model='gpt-4o',
-            stream=True,
-            messages=[{'role': 'system', 'content': system_prompt}] + messages,
-        )
-        for chunk in resp:
-            delta = chunk.choices[0].delta.content or ''
-            if delta:
-                yield f'data: {json.dumps({"delta": delta})}\n\n'
+        try:
+            from openai import OpenAI
+            client = OpenAI(api_key=openai_key)
+            resp = client.chat.completions.create(
+                model='gpt-4o',
+                stream=True,
+                messages=[{'role': 'system', 'content': system_prompt}] + messages,
+            )
+            for chunk in resp:
+                delta = chunk.choices[0].delta.content or ''
+                if delta:
+                    yield f'data: {json.dumps({"delta": delta})}\n\n'
+        except Exception as e:
+            yield f'data: {json.dumps({"delta": "[openai error] " + type(e).__name__ + ": " + str(e)[:400]})}\n\n'
         yield 'data: [DONE]\n\n'
 
     def stream_gemini():
-        from google import genai as gai
-        from google.genai import types as gtypes
-        client = gai.Client(api_key=gemini_key)
-        # Build contents list: prepend system as a user turn for context
-        contents = []
-        for m in messages:
-            role = 'user' if m['role'] == 'user' else 'model'
-            contents.append(gtypes.Content(role=role, parts=[gtypes.Part(text=m['content'])]))
-        cfg = gtypes.GenerateContentConfig(system_instruction=system_prompt, max_output_tokens=1024)
-        for chunk in client.models.generate_content_stream(
-            model='gemini-2.5-flash',
-            contents=contents,
-            config=cfg,
-        ):
-            text = chunk.text or ''
-            if text:
-                yield f'data: {json.dumps({"delta": text})}\n\n'
+        try:
+            from google import genai as gai
+            from google.genai import types as gtypes
+            client = gai.Client(api_key=gemini_key)
+            # Build contents list: prepend system as a user turn for context
+            contents = []
+            for m in messages:
+                role = 'user' if m['role'] == 'user' else 'model'
+                contents.append(gtypes.Content(role=role, parts=[gtypes.Part(text=m['content'])]))
+            cfg = gtypes.GenerateContentConfig(system_instruction=system_prompt, max_output_tokens=1024)
+            for chunk in client.models.generate_content_stream(
+                model='gemini-2.5-flash',
+                contents=contents,
+                config=cfg,
+            ):
+                text = chunk.text or ''
+                if text:
+                    yield f'data: {json.dumps({"delta": text})}\n\n'
+        except Exception as e:
+            yield f'data: {json.dumps({"delta": "[gemini error] " + type(e).__name__ + ": " + str(e)[:400]})}\n\n'
         yield 'data: [DONE]\n\n'
 
     if anthropic_key:
