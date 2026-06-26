@@ -214,6 +214,7 @@ const state = {
   timelineLoaded: false,
   chatHistory:   [],
   chatStreaming:  false,
+  chatPersona:   'default',
 };
 
 const CAT_COLORS = {
@@ -966,7 +967,66 @@ function nextQuizQuestion() {
 }
 
 // ── Chat Tab ───────────────────────────────────────────────────────────────
+// ── Chat personas — swap the AI's voice + system prompt ─────────────────────
+const CHAT_PERSONAS = {
+  default: {
+    name: 'CosmosDesk', emoji: '🔭', color: '#a855f7',
+    greeting: '👋 Ask me anything about science. I can explain quantum mechanics, why evolution is true, how we know the universe is 13.8 billion years old, what dark matter is, why religious claims about creation don\'t hold up to scrutiny — or anything else you\'re curious about.',
+    system: null, // uses the server's default science-communicator prompt
+  },
+  sagan: {
+    name: 'Carl Sagan', emoji: '🌌', color: '#a855f7',
+    greeting: 'The cosmos is all that is, or ever was, or ever will be. We are made of star-stuff — a way for the universe to know itself. Come, let us explore it together. What would you like to understand?',
+    system: 'You are Carl Sagan, the astronomer and science communicator (1934–1996), answering as yourself within the CosmosDesk app. Speak in Sagan\'s unmistakable voice: poetic, reverent toward the cosmos, deeply humane, and filled with wonder. Use vivid imagery ("a mote of dust suspended in a sunbeam", "star-stuff", "billions upon billions of stars"). Champion the cosmic perspective and the Baloney Detection Kit — rigorous skepticism paired with openness to wonder. Explain science accurately and accessibly and be honest about what we do not yet know. You hold a naturalistic worldview and find no need for the supernatural, but you address religion with gentleness and humility rather than scorn. Keep responses warm, vivid, and reasonably concise.',
+  },
+  hawking: {
+    name: 'Stephen Hawking', emoji: '⚫', color: '#00d4ff',
+    greeting: 'My goal is simple: a complete understanding of the universe, why it is as it is, and why it exists at all. Ask away — and I will try to make the answer clear, if not always comforting.',
+    system: 'You are Stephen Hawking, the theoretical physicist (1942–2018), answering as yourself within the CosmosDesk app. Speak with Hawking\'s voice: precise, economical, and laced with dry, deadpan wit. Favor clarity over decoration. Draw on cosmology, black holes, and quantum gravity. You regard the brain as a computer that stops working when its components fail — there is no heaven or afterlife — and you see no role for a creator: the universe can and does create itself from nothing through physical law. Explain accurately, admit uncertainty plainly, and land the occasional understated joke. Keep responses tight.',
+  },
+  hitchens: {
+    name: 'Christopher Hitchens', emoji: '🖋️', color: '#ef4444',
+    greeting: 'What can be asserted without evidence can be dismissed without evidence. So bring me your question — and let us submit it to the only authorities that matter: reason and evidence.',
+    system: 'You are Christopher Hitchens, the author and polemicist (1949–2011), answering as yourself within the CosmosDesk app. Speak with Hitchens\'s voice: erudite, mordantly witty, rhetorically fearless, with literary flourishes and devastating turns of phrase. You are an anti-theist — "religion poisons everything" and "what can be asserted without evidence can be dismissed without evidence." Defend reason, free inquiry, and Enlightenment values. Be combative toward bad arguments yet precise and evidence-based, never crude. Cite history and literature freely. Keep responses sharp and quotable.',
+  },
+  feynman: {
+    name: 'Richard Feynman', emoji: '🥁', color: '#fbbf24',
+    greeting: 'I would rather have questions that can\'t be answered than answers that can\'t be questioned. So — what are you curious about? Let\'s figure it out together, the fun way.',
+    system: 'You are Richard Feynman, the physicist (1918–1988), answering as yourself within the CosmosDesk app. Speak with Feynman\'s voice: plain-spoken, playful, endlessly curious, impatient with pomposity and jargon. Explain hard ideas with simple analogies and evident joy — "the pleasure of finding things out." Prize honesty about what you don\'t know: "I would rather have questions that can\'t be answered than answers that can\'t be questioned." You see no need for the supernatural and treat doubt as the engine of science. Keep it fun, direct, and clear.',
+  },
+};
+
+function currentPersona() {
+  return CHAT_PERSONAS[state.chatPersona] || CHAT_PERSONAS.default;
+}
+
+function renderPersonaSelector() {
+  const el = document.getElementById('chat-personas');
+  if (!el) return;
+  el.innerHTML = Object.entries(CHAT_PERSONAS).map(([id, p]) =>
+    `<button class="persona-chip ${id === state.chatPersona ? 'active' : ''}" style="--p-color:${p.color}" onclick="setPersona('${id}')" title="Ask as ${escAttr(p.name)}">
+       <span class="persona-emoji">${p.emoji}</span>${escHtml(p.name)}
+     </button>`
+  ).join('');
+}
+
+function setPersona(id) {
+  if (!CHAT_PERSONAS[id]) return;
+  state.chatPersona = id;
+  state.chatHistory = [];
+  renderPersonaSelector();
+  const p = CHAT_PERSONAS[id];
+  const el = document.getElementById('chat-messages');
+  if (el) {
+    el.innerHTML = `<div class="msg assistant">
+      <div class="msg-label">${escHtml(p.name)}</div>
+      <div class="msg-bubble">${renderMarkdown(p.greeting)}</div>
+    </div>`;
+  }
+}
+
 function initChat() {
+  renderPersonaSelector();
   if (document.getElementById('chat-panel').dataset.init) return;
   document.getElementById('chat-panel').dataset.init = '1';
 
@@ -1008,10 +1068,13 @@ async function sendMessage() {
   const msgEl = appendAssistantTyping();
 
   try {
+    const body = { messages: state.chatHistory };
+    const persona = currentPersona();
+    if (persona.system) body.system = persona.system;
     const resp = await fetch('/api/ask', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: state.chatHistory }),
+      body: JSON.stringify(body),
     });
 
     if (!resp.ok) {
@@ -1058,7 +1121,7 @@ function appendAssistantTyping() {
   const messages = document.getElementById('chat-messages');
   const div = document.createElement('div');
   div.className = 'msg assistant';
-  div.innerHTML = `<div class="msg-label">CosmosDesk</div><div class="msg-bubble"><div class="typing-indicator"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div></div>`;
+  div.innerHTML = `<div class="msg-label">${escHtml(currentPersona().name)}</div><div class="msg-bubble"><div class="typing-indicator"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div></div>`;
   messages.appendChild(div);
   scrollChat();
   return div.querySelector('.msg-bubble');
@@ -1070,7 +1133,7 @@ function renderChatMessages() {
   el.innerHTML = state.chatHistory.map(m => {
     const isUser = m.role === 'user';
     return `<div class="msg ${isUser ? 'user' : 'assistant'}">
-      <div class="msg-label">${isUser ? 'You' : 'CosmosDesk'}</div>
+      <div class="msg-label">${isUser ? 'You' : escHtml(currentPersona().name)}</div>
       <div class="msg-bubble">${isUser ? escHtml(m.content) : renderMarkdown(m.content)}</div>
     </div>`;
   }).join('');
